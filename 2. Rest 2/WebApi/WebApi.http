@@ -1,0 +1,32 @@
+@WebApi_HostAddress = http://localhost:5026
+
+GET {{WebApi_HostAddress}}/
+Accept: application/json
+
+###
+
+PATCH {{WebApi_HostAddress}}/api/v1/admin/quizzes/1
+Content-Type: application/json-patch+json
+
+[{
+  "op": "add",
+  "path": "/items/-",
+  "value": {
+    "question": "4*7",
+    "correctAnswer": "28",
+    "incorrectAnswers": ["27", "28", "29"]
+  }
+}]
+
+###
+
+PATCH {{WebApi_HostAddress}}/api/v1/admin/quizzes/1
+Content-Type: application/json-patch+json
+
+[
+  {
+    "op": "replace",
+    "path": "title",
+    "value": "Arytmetyka"
+  }
+]
