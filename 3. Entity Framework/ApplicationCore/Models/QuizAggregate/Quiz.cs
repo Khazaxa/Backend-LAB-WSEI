@@ -10,7 +10,7 @@ public class Quiz: IIdentity<int>
     
     public List<QuizItem> Items { get; }
 
-    public Quiz(int id, string title, List<QuizItem> items)
+    public Quiz(int id, List<QuizItem> items, string title)
     {
         Id = id;
         Items = items;

@@ -3,6 +3,7 @@ using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(QuizDbContext))]
-    partial class QuizDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240416214647_InitMigration")]
+    partial class InitMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -183,8 +186,6 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("UserId", "QuizId", "QuizItemId");
 
-                    b.HasIndex("QuizId");
-
                     b.HasIndex("QuizItemId");
 
                     b.ToTable("UserAnswers");
@@ -209,14 +210,6 @@ namespace Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Email = "example@gmail.com",
-                            Password = "Password123$d"
-                        });
                 });
 
             modelBuilder.Entity("QuizEntityQuizItemEntity", b =>
@@ -330,21 +323,9 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Infrastructure.Entites.QuizItemUserAnswerEntity", b =>
                 {
-                    b.HasOne("Infrastructure.Entites.QuizEntity", null)
-                        .WithMany()
-                        .HasForeignKey("QuizId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Infrastructure.Entites.QuizItemEntity", "QuizItem")
                         .WithMany()
                         .HasForeignKey("QuizItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Infrastructure.Entites.UserEntity", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

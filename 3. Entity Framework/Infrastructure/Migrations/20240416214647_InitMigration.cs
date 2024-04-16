@@ -7,7 +7,7 @@
 namespace Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class EFEntities : Migration
+    public partial class InitMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -177,12 +177,8 @@ namespace Infrastructure.Migrations
                 values: new object[,]
                 {
                     { 1, 1 },
-                    { 1, 2 },
                     { 2, 1 },
-                    { 2, 2 },
-                    { 3, 1 },
-                    { 3, 2 },
-                    { 4, 2 }
+                    { 3, 1 }
                 });
 
             migrationBuilder.InsertData(

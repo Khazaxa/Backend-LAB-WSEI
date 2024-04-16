@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure.EF.Entities;
+namespace Infrastructure.Entites;
 
 [PrimaryKey(nameof(UserId), nameof(QuizId), nameof(QuizItemId))]
 public class QuizItemUserAnswerEntity

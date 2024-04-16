@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(QuizDbContext))]
-    [Migration("20240415115527_EFEntities")]
-    partial class EFEntities
+    [Migration("20240416220139_AddUser")]
+    partial class AddUser
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,7 +24,7 @@ namespace Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Infrastructure.EF.Entities.QuizEntity", b =>
+            modelBuilder.Entity("Infrastructure.Entites.QuizEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -53,7 +53,7 @@ namespace Infrastructure.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Infrastructure.EF.Entities.QuizItemAnswerEntity", b =>
+            modelBuilder.Entity("Infrastructure.Entites.QuizItemAnswerEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -122,7 +122,7 @@ namespace Infrastructure.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Infrastructure.EF.Entities.QuizItemEntity", b =>
+            modelBuilder.Entity("Infrastructure.Entites.QuizItemEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -169,7 +169,7 @@ namespace Infrastructure.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Infrastructure.EF.Entities.QuizItemUserAnswerEntity", b =>
+            modelBuilder.Entity("Infrastructure.Entites.QuizItemUserAnswerEntity", b =>
                 {
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -186,12 +186,14 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("UserId", "QuizId", "QuizItemId");
 
+                    b.HasIndex("QuizId");
+
                     b.HasIndex("QuizItemId");
 
                     b.ToTable("UserAnswers");
                 });
 
-            modelBuilder.Entity("Infrastructure.EF.Entities.UserEntity", b =>
+            modelBuilder.Entity("Infrastructure.Entites.UserEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -210,6 +212,14 @@ namespace Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Email = "example@gmail.com",
+                            Password = "Password123$d"
+                        });
                 });
 
             modelBuilder.Entity("QuizEntityQuizItemEntity", b =>
@@ -241,26 +251,6 @@ namespace Infrastructure.Migrations
                         {
                             ItemsId = 3,
                             QuizzesId = 1
-                        },
-                        new
-                        {
-                            ItemsId = 1,
-                            QuizzesId = 2
-                        },
-                        new
-                        {
-                            ItemsId = 2,
-                            QuizzesId = 2
-                        },
-                        new
-                        {
-                            ItemsId = 3,
-                            QuizzesId = 2
-                        },
-                        new
-                        {
-                            ItemsId = 4,
-                            QuizzesId = 2
                         });
                 });
 
@@ -341,11 +331,23 @@ namespace Infrastructure.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Infrastructure.EF.Entities.QuizItemUserAnswerEntity", b =>
+            modelBuilder.Entity("Infrastructure.Entites.QuizItemUserAnswerEntity", b =>
                 {
-                    b.HasOne("Infrastructure.EF.Entities.QuizItemEntity", "QuizItem")
+                    b.HasOne("Infrastructure.Entites.QuizEntity", null)
+                        .WithMany()
+                        .HasForeignKey("QuizId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Infrastructure.Entites.QuizItemEntity", "QuizItem")
                         .WithMany()
                         .HasForeignKey("QuizItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Infrastructure.Entites.UserEntity", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -354,13 +356,13 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("QuizEntityQuizItemEntity", b =>
                 {
-                    b.HasOne("Infrastructure.EF.Entities.QuizItemEntity", null)
+                    b.HasOne("Infrastructure.Entites.QuizItemEntity", null)
                         .WithMany()
                         .HasForeignKey("ItemsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Infrastructure.EF.Entities.QuizEntity", null)
+                    b.HasOne("Infrastructure.Entites.QuizEntity", null)
                         .WithMany()
                         .HasForeignKey("QuizzesId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -369,13 +371,13 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("QuizItemAnswerEntityQuizItemEntity", b =>
                 {
-                    b.HasOne("Infrastructure.EF.Entities.QuizItemAnswerEntity", null)
+                    b.HasOne("Infrastructure.Entites.QuizItemAnswerEntity", null)
                         .WithMany()
                         .HasForeignKey("IncorrectAnswersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Infrastructure.EF.Entities.QuizItemEntity", null)
+                    b.HasOne("Infrastructure.Entites.QuizItemEntity", null)
                         .WithMany()
                         .HasForeignKey("QuizItemsId")
                         .OnDelete(DeleteBehavior.Cascade)

@@ -1,4 +1,4 @@
-namespace Infrastructure.EF.Entities;
+namespace Infrastructure.Entites;
 
 public class QuizEntity
 {

@@ -1,6 +1,6 @@
 namespace ApplicationCore.Exceptions;
 
-public class QuizAnswerItemAlreadyExistsException : Exception
+public class QuizAnswerItemAlreadyExistsException: Exception
 {
     private int UserId;
     private int QuizId;

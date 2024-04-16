@@ -8,10 +8,12 @@ public class QuizItemUserAnswer: IIdentity<string>
     public QuizItem  QuizItem{ get; init; }
     public int UserId { get; init; }
     public string Answer { get; init; }
-    public int QuizItemId { get; set; }
-    public string UserAnswer { get; set; }
     
-    public QuizItemUserAnswer(QuizItem quizItem, int userId, int quizId, string answer)
+    public QuizItemUserAnswer()
+    {
+    }
+    
+    public QuizItemUserAnswer(QuizItem quizItem, int userId, int quizId,string answer)
     {
         QuizItem = quizItem;
         Answer = answer;
@@ -19,16 +21,16 @@ public class QuizItemUserAnswer: IIdentity<string>
         QuizId = quizId;
     }
     
-    public QuizItemUserAnswer() { }
-    
     public bool IsCorrect()
     {
         return QuizItem.CorrectAnswer == Answer;
     }
-    
     public string Id
     {
-        get => $"{QuizId}{UserId}{QuizItem.Id}";
-        set { }
+        get => QuizItem != null ? $"{QuizId}{UserId}{QuizItem.Id}" : $"{QuizId}{UserId}";
+        set
+        {
+        
+        }
     }
 }

@@ -1,4 +1,4 @@
-using Infrastructure.EF.Entities;
+using Infrastructure.Entites;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure;
@@ -14,12 +14,22 @@ public class QuizDbContext : DbContext
     {
         base.OnConfiguring(optionsBuilder);
         optionsBuilder.UseSqlServer(
-            "DATA SOURCE=localhost:7149;DATABASE=QuizDb;Integrated Security=true;TrustServerCertificate=True");
+            "DATA SOURCE=localhost;DATABASE=QuizDb;Integrated Security=true;TrustServerCertificate=True");
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+        
+        modelBuilder.Entity<UserEntity>()
+            .HasData(
+                new UserEntity()
+                {
+                    Id = 1,
+                    Email = "example@gmail.com",
+                    Password = "Password123$d"
+                }
+            );
         
         modelBuilder.Entity<QuizItemUserAnswerEntity>()
             .HasOne(e => e.QuizItem);
@@ -37,6 +47,18 @@ public class QuizDbContext : DbContext
                 new QuizItemAnswerEntity() {Id = 9, Answer = "9"},
                 new QuizItemAnswerEntity() {Id = 10, Answer = "0"}
             );
+        
+        modelBuilder.Entity<QuizItemUserAnswerEntity>()
+            .HasOne<QuizEntity>()
+            .WithMany()
+            .HasForeignKey(a => a.QuizId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<QuizItemUserAnswerEntity>()
+            .HasOne<UserEntity>()
+            .WithMany()
+            .HasForeignKey(a => a.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
             
         modelBuilder.Entity<QuizItemEntity>()
             .HasData(
@@ -87,11 +109,7 @@ public class QuizDbContext : DbContext
                 join => join.HasData(
                     new {QuizzesId = 1, ItemsId = 1},
                     new {QuizzesId = 1, ItemsId = 2},
-                    new {QuizzesId = 1, ItemsId = 3},
-                    new {QuizzesId = 2, ItemsId = 1},
-                    new {QuizzesId = 2, ItemsId = 2},
-                    new {QuizzesId = 2, ItemsId = 3},
-                    new {QuizzesId = 2, ItemsId = 4}
+                    new {QuizzesId = 1, ItemsId = 3}
                 )
             );
 

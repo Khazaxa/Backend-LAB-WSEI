@@ -47,13 +47,7 @@ public class QuizUserService: IQuizUserService
             throw new QuizItemNotFoundException($"Quiz item with id = {quizItemId} not found!");
         }
 
-        var userAnswer = new QuizItemUserAnswer()
-        {
-            QuizItem = item,
-            QuizId = quizId,
-            Answer = answer,
-            UserId = userId
-        };
+        var userAnswer = new QuizItemUserAnswer(item, userId, quizId, answer);
         return _answerRepository.Add(userAnswer);
     }
 

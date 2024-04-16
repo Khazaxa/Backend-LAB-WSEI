@@ -8,12 +8,15 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Google.Protobuf" Version="3.22.1"/>
-        <PackageReference Include="Grpc.Tools" Version="2.52.0"/>
-        <PackageReference Include="Grpc.Net.Client.Web" Version="2.52.0"/>
-        <PackageReference Include="Grpc.Net.ClientFactory" Version="2.52.0">
+        <PackageReference Include="Google.Protobuf" Version="3.26.1" />
+        <PackageReference Include="Grpc.Tools" Version="2.62.0">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.4"/>
+        <PackageReference Include="Grpc.Net.Client.Web" Version="2.62.0" />
+        <PackageReference Include="Grpc.Net.ClientFactory" Version="2.62.0">
+        </PackageReference>
+        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="9.0.0-preview.3.24207.3" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\ApplicationCore\ApplicationCore.csproj"/>

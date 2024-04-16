@@ -1,6 +1,5 @@
-﻿using ApplicationCore.Interfaces;
-using ApplicationCore.Models;
-using Microsoft.AspNetCore.Http.HttpResults;
+﻿using ApplicationCore.Exceptions;
+using ApplicationCore.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers;
@@ -29,17 +28,24 @@ public class QuizController: ControllerBase
     }
 
     [HttpPost]
-    [Route("{quizId}/items/{itemId}/answers")]
-    public ActionResult SaveAnswer([FromBody] QuizItemAnswerDto dto, int quizId, int itemId)
+    public IActionResult SaveUserAnswerForQuiz(int quizId, int quizItemId, int userId, string answer)
     {
         try
         {
-            var answer = _service.SaveUserAnswerForQuiz(quizId, itemId, dto.UserId, dto.UserAnswer);
-            return Created("", answer);
+            var result = _service.SaveUserAnswerForQuiz(quizId, quizItemId, userId, answer);
+            return Ok(result);
         }
-        catch (Exception)
+        catch (QuizNotFoundException ex)
         {
-            return BadRequest();
+            return BadRequest(new { message = ex.Message });
+        }
+        catch (QuizAnswerItemAlreadyExistsException ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { message = ex.Message });
         }
     }
 
@@ -49,7 +55,7 @@ public class QuizController: ControllerBase
     {
         int userId = 1;
         var answers = _service.GetUserAnswersForQuiz(quizId, userId);
-        //TODO: zdefiniuj mapper listy odpowiedzi na obiekt FeedbackQuizDto 
+       
         return new FeedbackQuizDto()
         {
             QuizId = quizId,
