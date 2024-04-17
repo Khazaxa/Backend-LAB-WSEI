@@ -15,8 +15,7 @@ public class QuizDbContext : IdentityDbContext<UserEntity, UserRole, int>
     {
         base.OnConfiguring(optionsBuilder);
         optionsBuilder.UseSqlServer(
-            //"DATA SOURCE=localhost;DATABASE=QuizDb;Integrated Security=true;TrustServerCertificate=True");
-           @"DATA SOURCE=MR-30\SQLEXPRESS;DATABASE=QuizDb;Integrated Security=true;TrustServerCertificate=True");    
+            "DATA SOURCE=localhost;DATABASE=QuizDb;Integrated Security=true;TrustServerCertificate=True");
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -28,8 +27,7 @@ public class QuizDbContext : IdentityDbContext<UserEntity, UserRole, int>
                 new UserEntity()
                 {
                     Id = 1,
-                    Email = "example@gmail.com",
-                    Password = "Password123$d"
+                    Email = "example@gmail.com"
                 }
             );
         

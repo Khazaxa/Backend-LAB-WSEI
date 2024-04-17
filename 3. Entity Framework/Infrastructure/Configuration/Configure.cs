@@ -49,79 +49,78 @@ public static class Configure
         {
             opt.AddPolicy("Bearer", new AuthorizationPolicyBuilder()
                 .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
-                .RequireAssertion(context => true) // Add this line
+                .RequireAuthenticatedUser()
                 .Build());
             opt.AddPolicy("Email", policy =>
             {
                 policy.RequireClaim("email");
             });
         });
-    services
-        .AddAuthentication(opt =>
-        {
-            opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            opt.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-        })
-        .AddJwtBearer(options =>
-        {
-            options.RequireHttpsMetadata = false;
-            options.SaveToken = true;
-
-            if (jwtSettings.Secret != null)
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
-                    ValidIssuer = jwtSettings.Issuer,
-                    ValidAudience = jwtSettings.Audience,
-                    IssuerSigningKey =
-                        new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Secret)),
-                    ClockSkew = TimeSpan.FromSeconds(60)
-                };
-            options.Events = new JwtBearerEvents()
+        services
+            .AddAuthentication(opt =>
             {
-                OnAuthenticationFailed = context =>
-                {
-                    if (context.Exception.GetType() == typeof(SecurityTokenException))
+                opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                opt.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                options.RequireHttpsMetadata = false;
+                options.SaveToken = true;
+
+                if (jwtSettings.Secret != null)
+                    options.TokenValidationParameters = new TokenValidationParameters
                     {
-                        context.Response.Headers.Add("Token-expired", "true");
-                    }
-                    return Task.CompletedTask;
-                },
-                OnChallenge = context =>
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = jwtSettings.Issuer,
+                        ValidAudience = jwtSettings.Audience,
+                        IssuerSigningKey =
+                            new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Secret)),
+                        ClockSkew = TimeSpan.FromSeconds(60)
+                    };
+                options.Events = new JwtBearerEvents()
                 {
-                    context.HandleResponse();
-                    context.Response.StatusCode = 401;
-                    context.Response.ContentType = "application/json";
-                    var result = JsonConvert.SerializeObject("401 Not authorized");
-                    return context.Response.WriteAsync(result);
-                },
-                OnForbidden = context =>
-                {
-                    context.Response.StatusCode = 403;
-                    context.Response.ContentType = "application/json";
-                    var result = JsonConvert.SerializeObject("403 Not authorized");
-                    return context.Response.WriteAsync(result);
-                },
-            };
-        });
-}
+                    OnAuthenticationFailed = context =>
+                    {
+                        if (context.Exception.GetType() == typeof(SecurityTokenException))
+                        {
+                            context.Response.Headers.Add("Token-expired", "true");
+                        }
+                        return Task.CompletedTask;
+                    },
+                    OnChallenge = context =>
+                    {
+                        context.HandleResponse();
+                        context.Response.StatusCode = 401;
+                        context.Response.ContentType = "application/json";
+                        var result = JsonConvert.SerializeObject("401 Not authorized");
+                        return context.Response.WriteAsync(result);
+                    },
+                    OnForbidden = context =>
+                    {
+                        context.Response.StatusCode = 403;
+                        context.Response.ContentType = "application/json";
+                        var result = JsonConvert.SerializeObject("403 Not authorized");
+                        return context.Response.WriteAsync(result);
+                    },
+                };
+            });
+    }
     
-    public static async Task AddUsers(this WebApplication app)
-    {
+    public static async void AddUsers(this WebApplication app){
         using (var scope = app.Services.CreateScope())
         {
             var userManager = scope.ServiceProvider.GetService<UserManager<UserEntity>>();
-            var find = await userManager.FindByEmailAsync("example@gmail.com");
+            var find = await userManager.FindByEmailAsync("karol@wsei.edu.pl");
             if (find == null)
             {
-                UserEntity user = new UserEntity() {Email = "example@gmail.com", UserName = "example"};
+                UserEntity user = new UserEntity() {Email = "karol@wsei.edu.pl", UserName = "karol"};
 
-                var saved = await userManager?.CreateAsync(user, "Password123$d");
-                await userManager.AddToRoleAsync(user, "USER");
+                var saved = await userManager?.CreateAsync(user, "1234ABcd$");
+                userManager.AddToRoleAsync(user, "USER");
             }
         }
     }

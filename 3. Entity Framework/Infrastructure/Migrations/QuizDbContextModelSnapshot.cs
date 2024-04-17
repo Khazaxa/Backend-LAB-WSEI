@@ -228,10 +228,6 @@ namespace Infrastructure.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");
 
@@ -268,11 +264,10 @@ namespace Infrastructure.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "41185cd4-a0ac-49df-802a-f3febdca9b43",
+                            ConcurrencyStamp = "ae8eb67c-7f4f-4ef0-a32b-ce1ba7d1bc52",
                             Email = "example@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            Password = "Password123$d",
                             PhoneNumberConfirmed = false,
                             TwoFactorEnabled = false
                         });

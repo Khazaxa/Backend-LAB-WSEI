@@ -8,10 +8,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Services;
 
-public class QuizUserServiceEF : IQuizUserService
+public class QuizUserServiceEF (
+    QuizDbContext _context,
+    IMapper _mapper): IQuizUserService
 {
-    private readonly QuizDbContext _context;
-    private readonly IMapper _mapper;
     public Quiz CreateAndGetQuizRandom(int count)
     {
         throw new NotImplementedException();

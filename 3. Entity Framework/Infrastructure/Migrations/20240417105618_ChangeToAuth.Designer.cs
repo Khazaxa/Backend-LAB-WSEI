@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(QuizDbContext))]
-    [Migration("20240417083839_JWT")]
-    partial class JWT
+    [Migration("20240417105618_ChangeToAuth")]
+    partial class ChangeToAuth
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -271,7 +271,7 @@ namespace Infrastructure.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "41185cd4-a0ac-49df-802a-f3febdca9b43",
+                            ConcurrencyStamp = "ce4dd6f2-44a6-4819-a8f3-d79f3522b9c6",
                             Email = "example@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,

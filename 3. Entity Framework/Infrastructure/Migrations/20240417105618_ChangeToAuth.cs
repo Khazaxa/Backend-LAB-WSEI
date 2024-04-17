@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class JWT : Migration
+    public partial class ChangeToAuth : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -249,7 +249,7 @@ namespace Infrastructure.Migrations
                 keyColumn: "Id",
                 keyValue: 1,
                 columns: new[] { "AccessFailedCount", "ConcurrencyStamp", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { 0, "41185cd4-a0ac-49df-802a-f3febdca9b43", false, false, null, null, null, null, null, false, null, false, null });
+                values: new object[] { 0, "ce4dd6f2-44a6-4819-a8f3-d79f3522b9c6", false, false, null, null, null, null, null, false, null, false, null });
 
             migrationBuilder.CreateIndex(
                 name: "EmailIndex",
