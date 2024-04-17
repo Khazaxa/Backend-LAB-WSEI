@@ -1,9 +1,10 @@
 using Infrastructure.Entites;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure;
 
-public class QuizDbContext : DbContext
+public class QuizDbContext : IdentityDbContext<UserEntity, UserRole, int>
 {
     public DbSet<QuizEntity> Quizzes { get; set; }
     public DbSet<QuizItemEntity> QuizItems { get; set; }
@@ -14,7 +15,8 @@ public class QuizDbContext : DbContext
     {
         base.OnConfiguring(optionsBuilder);
         optionsBuilder.UseSqlServer(
-            "DATA SOURCE=localhost;DATABASE=QuizDb;Integrated Security=true;TrustServerCertificate=True");
+            //"DATA SOURCE=localhost;DATABASE=QuizDb;Integrated Security=true;TrustServerCertificate=True");
+           @"DATA SOURCE=MR-30\SQLEXPRESS;DATABASE=QuizDb;Integrated Security=true;TrustServerCertificate=True");    
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
