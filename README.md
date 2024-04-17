@@ -1,5 +1,4 @@
 # Backend-LAB-WSEI
-sklejka wielu repo
 
 
 W kontekście podmieniamy linijke 17 na
