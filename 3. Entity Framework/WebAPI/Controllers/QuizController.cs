@@ -1,5 +1,6 @@
 ﻿using ApplicationCore.Exceptions;
 using ApplicationCore.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers;
@@ -28,6 +29,8 @@ public class QuizController: ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Policy = "Bearer")]
+    [Route("{quizId}/items/{itemId}/answers")]
     public IActionResult SaveUserAnswerForQuiz(int quizId, int quizItemId, int userId, string answer)
     {
         try
