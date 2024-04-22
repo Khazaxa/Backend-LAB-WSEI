@@ -1,0 +1,8 @@
+POST  http://localhost:5190/api/v1/quizzes/1/items/1/answers
+Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoia2Fyb2wiLCJnZW5kZXIiOiJtYWxlIiwiZW1haWwiOiJrYXJvbEB3c2VpLmVkdS5wbCIsImV4cCI6MTcxMzgxOTg5NiwianRpIjoiYjQwZWY2MWEtYmRmMC00MjY1LTlkM2MtZDBkMTM3YjlmNGRlIiwiYXVkIjoid3NlaSIsImlzcyI6IndzZWkifQ.tYcslFs7posIgPGQGZxrY5z5IVCIa0dVrIJtUb3TPAY
+
+{
+  "userId": 2,
+  "UserAnswer": "4"
+}

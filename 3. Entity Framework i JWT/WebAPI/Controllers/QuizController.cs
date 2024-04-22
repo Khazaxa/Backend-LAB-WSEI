@@ -31,12 +31,12 @@ public class QuizController: ControllerBase
     [HttpPost]
     [Authorize(Policy = "Bearer")]
     [Route("{quizId}/items/{itemId}/answers")]
-    public IActionResult SaveUserAnswerForQuiz(int quizId, int quizItemId, int userId, string answer)
+    public ActionResult SaveAnswer([FromBody] QuizItemAnswerDto dto, int quizId, int itemId)
     {
         try
         {
-            var result = _service.SaveUserAnswerForQuiz(quizId, quizItemId, userId, answer);
-            return Ok(result);
+            var answer = _service.SaveUserAnswerForQuiz(quizId, itemId, dto.UserId, dto.UserAnswer);
+            return Created("", answer);
         }
         catch (QuizNotFoundException ex)
         {
