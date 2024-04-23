@@ -42,32 +42,29 @@ public class ApiQuizAdminController : ControllerBase
     
     [HttpPatch]
     [Route("{quizId}")]
-    public IActionResult UpdateQuiz(IValidator<QuizItem> validator, int quizId, JsonPatchDocument<Quiz> patch)
+    [Consumes("application/json-patch+json")]
+    public ActionResult<Quiz> AddQuizItem(int quizId, JsonPatchDocument<Quiz>? patchDoc)
     {
         var quiz = _service.FindAllQuizzes().FirstOrDefault(q => q.Id == quizId);
-
-        if (patch is null)
+        if (quiz is null || patchDoc is null)
         {
-            return BadRequest(new {error = "Invalid patch document"});
+            return NotFound(new
+            {
+                error = $"Quiz width id {quizId} not found"
+            });
         }
-
-        var disabledOperation = patch.Operations.FirstOrDefault(op => op.OperationType == OperationType.Remove && op.path == "/Items");
-        if (disabledOperation is not null)
+        int previousCount = quiz.Items.Count;
+        patchDoc.ApplyTo(quiz, ModelState);
+        if (!ModelState.IsValid)
         {
-            return BadRequest(new { error = "Remove operation is not allowed" });
+            return BadRequest(ModelState);
         }
-        patch.ApplyTo(quiz);
-        var patchedItem = quiz.Items[^1];
-        var result = validator.Validate(patchedItem);
-        if(!result.IsValid)
+        if (previousCount < quiz.Items.Count)
         {
-            return BadRequest(result.Errors);
+            QuizItem item = quiz.Items[^1];
+            quiz.Items.RemoveAt(quiz.Items.Count - 1);
+            _service.AddQuizItemToQuiz(quizId, item);
         }
-        if(quizId != quiz.Id)
-        {
-            return BadRequest(new {error = "Id mismatch!"});
-        }
-        _service.UpdateQuiz(quiz);
-        return Ok(quiz);
+        return Ok(_service.FindAllQuizzes().FirstOrDefault(q => q.Id == quizId));
     }
 }

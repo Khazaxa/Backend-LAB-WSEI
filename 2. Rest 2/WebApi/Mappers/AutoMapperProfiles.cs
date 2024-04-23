@@ -9,6 +9,11 @@ public class AutoMapperProfiles : Profile
 {
     public AutoMapperProfiles()
     {
+        CreateMap<Quiz, QuizDto>()
+            .ForMember(dest => dest.Items, opt => opt.MapFrom(src => src.Items)); // Dodajemy to mapowanie
+
+        CreateMap<QuizItem, QuizItemDto>();
+
         CreateMap<QuizItemUserAnswer, AnswerDto>()
             .ForMember(dest 
                 => dest.Question, opt 
