@@ -28,3 +28,29 @@
     </ItemGroup>
 
 </Project>
+
+
+using System.Net.Http.Json;
+using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.VisualStudio.TestPlatform.TestHost;
+using WebAPI.Controllers;
+
+namespace IntegrationTest;
+
+public class QuizApiTest
+{
+    [Fact]
+    public async void GetShouldReturnQuiz()
+    {
+        // Arrange
+        await using var application = new WebApplicationFactory<Program>();
+        using var client = application.CreateClient();
+
+        // Act
+        var result = await client.GetFromJsonAsync<QuizDto>("/api/v1/user/quizzes/1");
+        
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal(1, result.Id);
+    }
+}
