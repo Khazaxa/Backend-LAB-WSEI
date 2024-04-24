@@ -7,3 +7,6 @@ W kontekście podmieniamy linijke 17 na
 
 
 *Dane mogą się różnić w zależności od PC*
+
+
+mam temat 2
